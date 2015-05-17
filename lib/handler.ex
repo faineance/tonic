@@ -9,7 +9,9 @@ defmodule Tonic.Handler do
 
     headers = [{"content-type", "text/html"}]
     {:ok, file} = File.read "priv/pages/" <> param <> ".md"
-    body = Earmark.to_html(file)     
+    title = String.capitalize(param) 
+    content = Earmark.to_html(file)     
+    body = EEx.eval_file "priv/templates/index.html.eex", [content: content, title: title]
     {:ok, resp} = :cowboy_req.reply(200, headers, body, req) 
     {:ok, req, state}
   end
