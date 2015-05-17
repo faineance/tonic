@@ -19,7 +19,8 @@ defmodule Tonic do
   def serve do
     routes = [
       {"/", Tonic.Handler, []}
-    ]
+    {"/static/[...]", :cowboy_static, {:priv_dir, :tonic, "static"}} 
+  ]
 
     dispatch = :cowboy_router.compile([{:_, routes}])
 
