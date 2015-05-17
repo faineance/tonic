@@ -8,12 +8,24 @@ defmodule Tonic do
 
     children = [
       # Define workers and child supervisors to be supervised
-      
+      worker(__MODULE__, [], function: :serve)  
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Tonic.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+  def serve do
+    routes = [
+      {"/", Tonic.Handler, []}
+    ]
+
+    dispatch = :cowboy_router.compile([{:_, routes}])
+
+    opts = [port: 8080]
+    env = [dispatch: dispatch]
+
+    {:ok, _pid} = :cowboy.start_http(:http, 100, opts, [env: env]) 
   end
 end
