@@ -28,6 +28,6 @@ defmodule Tonic.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:cowboy, "1.0.0"}, {:earmark, "0.1.16"} ]
+    [{:cowboy, "1.0.0"}, {:markdown, github: "devinus/markdown"} ]
   end
 end
