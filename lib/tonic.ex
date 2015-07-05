@@ -8,7 +8,7 @@ defmodule Tonic do
 
     children = [
       # Define workers and child supervisors to be supervised
-      worker(__MODULE__, [], function: :serve)  
+      worker(__MODULE__, [], function: :serve)
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -18,15 +18,16 @@ defmodule Tonic do
   end
   def serve do
     routes = [
+      {"/", Tonic.Handler, []},
       {"/:filename", Tonic.Handler, []},
-      {"/static/[...]", :cowboy_static, {:priv_dir, :tonic, "static"}} 
+      {"/static/[...]", :cowboy_static, {:priv_dir, :tonic, "static"}}
     ]
 
     dispatch = :cowboy_router.compile([{:_, routes}])
 
-    opts = [port: 8080]
+    opts = [port: 3000]
     env = [dispatch: dispatch]
 
-    {:ok, _pid} = :cowboy.start_http(:http, 100, opts, [env: env]) 
+    {:ok, _pid} = :cowboy.start_http(:http, 100, opts, [env: env])
   end
 end
